@@ -1,11 +1,12 @@
 import {
     Controller, Get, Post, Body, Patch, Param, Delete,
-    ParseUUIDPipe, HttpCode, HttpStatus
+    ParseUUIDPipe, HttpCode, HttpStatus, UseGuards
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -21,12 +22,17 @@ export class UsersController {
     }
 
     @Get()
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'List all users' })
     async findAll() {
         const users = await this.usersService.findAll();
         return users.map(({ password, ...u }) => u);
     }
 
     @Get(':id')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
     @ApiOperation({ summary: 'Get user by ID' })
     @ApiResponse({ status: 404, description: 'User not found' })
     async findOne(@Param('id', ParseUUIDPipe) id: string) {
@@ -36,6 +42,8 @@ export class UsersController {
     }
 
     @Patch(':id')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
     @ApiOperation({ summary: 'Update user' })
     async update(
         @Param('id', ParseUUIDPipe) id: string,
@@ -47,6 +55,8 @@ export class UsersController {
     }
 
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
     @ApiOperation({ summary: 'Delete user' })
     @HttpCode(HttpStatus.NO_CONTENT)
     async remove(@Param('id', ParseUUIDPipe) id: string) {

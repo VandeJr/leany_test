@@ -10,6 +10,7 @@ export const setupSwagger = (app: INestApplication): void => {
         .addTag('Products')
         .addTag('Cart')
         .addTag('Orders')
+        .addBearerAuth()
         .build();
 
     const document = SwaggerModule.createDocument(app, config);

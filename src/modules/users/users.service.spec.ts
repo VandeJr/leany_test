@@ -115,6 +115,23 @@ describe('UsersService (Integration with SQLite)', () => {
         });
     });
 
+    describe('findByEmail', () => {
+        it('deve retornar um usuário se o email existir', async () => {
+            const email = 'findme@test.com';
+            await service.create({ ...createMockDto(), email });
+
+            const found = await service.findByEmail(email);
+
+            expect(found).toBeDefined();
+            expect(found?.email).toBe(email);
+        });
+
+        it('deve retornar null se o email não existir', async () => {
+            const found = await service.findByEmail('naoexiste@test.com');
+            expect(found).toBeNull();
+        });
+    });
+
     describe('update', () => {
         it('deve atualizar dados simples (perfil) do usuário', async () => {
             const created = await service.create(createMockDto());

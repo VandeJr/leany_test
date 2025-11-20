@@ -1,24 +1,27 @@
-import { Controller, Post, Get, Param, Query, ParseUUIDPipe } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { Controller, Post, Get, Param, ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @ApiTags('Orders')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('orders')
 export class OrdersController {
     constructor(private readonly ordersService: OrdersService) { }
 
     @Post()
     @ApiOperation({ summary: 'Checkout: Create order from cart' })
-    @ApiQuery({ name: 'userId', required: true, type: String })
-    checkout(@Query('userId', ParseUUIDPipe) userId: string) {
-        return this.ordersService.checkout(userId);
+    @ApiResponse({ status: 201, description: 'Order created successfully.' })
+    checkout(@CurrentUser() user: { id: string }) {
+        return this.ordersService.checkout(user.id);
     }
 
     @Get()
     @ApiOperation({ summary: 'List user orders' })
-    @ApiQuery({ name: 'userId', required: true, type: String })
-    findAll(@Query('userId', ParseUUIDPipe) userId: string) {
-        return this.ordersService.findAll(userId);
+    findAll(@CurrentUser() user: { id: string }) {
+        return this.ordersService.findAll(user.id);
     }
 
     @Get(':id')
