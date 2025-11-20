@@ -16,6 +16,8 @@ import { CartProductEntity } from './entities/cart-product.entity';
 import { ProductEntity } from '../products/entities/product.entity';
 import { UserEntity } from '../users/entities/user.entity';
 import { ProfileEntity } from '../users/entities/profile.entity';
+import { OrderEntity } from '../orders/entities/order.entity';
+import { OrderItemEntity } from '../orders/entities/order-item.entity';
 
 describe('CartService (Integration)', () => {
     let cartService: CartService;
@@ -39,7 +41,7 @@ describe('CartService (Integration)', () => {
                         CartProductEntity,
                         ProductEntity,
                         UserEntity,
-                        ProfileEntity
+                        ProfileEntity, OrderEntity, OrderItemEntity
                     ],
                     synchronize: true,
                 }),
@@ -154,6 +156,23 @@ describe('CartService (Integration)', () => {
             const cart = await cartService.removeItem(userId, productB_Id);
             expect(cart).toBeDefined();
             expect(cart.items).toHaveLength(0);
+        });
+    });
+
+    describe('clearCart', () => {
+        it('deve remover todos os itens do carrinho', async () => {
+            await cartService.addItem(userId, { productId: productA_Id, quantity: 1 });
+            await cartService.addItem(userId, { productId: productB_Id, quantity: 1 });
+
+            let cart = await cartService.getCart(userId);
+            expect(cart.items).toHaveLength(2);
+
+            await cartService.clearCart(userId);
+
+            cart = await cartService.getCart(userId);
+            expect(cart.items).toHaveLength(0);
+            expect(cart.total).toBe(0);
+            expect(cart.id).toBeDefined();
         });
     });
 });

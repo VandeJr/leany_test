@@ -28,4 +28,8 @@ export class CartService {
     async removeItem(userId: string, productId: string): Promise<CartModel> {
         return this.cartRepository.removeItem(userId, productId);
     }
+
+    async clearCart(userId: string) {
+        return this.cartRepository.clearCart(userId);
+    }
 }

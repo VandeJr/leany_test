@@ -6,6 +6,7 @@ import { getTypeOrmConfig } from './config/typeorm.config';
 import { UsersModule } from './modules/users/users.module';
 import { ProductsModule } from './modules/products/products.module';
 import { CartModule } from './modules/cart/cart.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
     imports: [
@@ -19,7 +20,7 @@ import { CartModule } from './modules/cart/cart.module';
             inject: [ConfigService],
             useFactory: getTypeOrmConfig,
         }),
-        UsersModule, ProductsModule, CartModule
+        UsersModule, ProductsModule, CartModule, OrdersModule
     ],
     controllers: [],
     providers: [],

@@ -7,9 +7,11 @@ import { ProfileEntity } from './entities/profile.entity';
 import { ShoppingCartEntity } from '../cart/entities/shopping-cart.entity';
 import { CartProductEntity } from '../cart/entities/cart-product.entity';
 import { ProductEntity } from '../products/entities/product.entity';
+import { OrderEntity } from '../orders/entities/order.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ConflictException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import { OrderItemEntity } from '../orders/entities/order-item.entity';
 
 describe('UsersService (Integration with SQLite)', () => {
     let service: UsersService;
@@ -26,7 +28,8 @@ describe('UsersService (Integration with SQLite)', () => {
                         ProfileEntity,
                         ShoppingCartEntity,
                         CartProductEntity,
-                        ProductEntity
+                        ProductEntity,
+                        OrderEntity, OrderItemEntity
                     ],
                     synchronize: true,
                 }),
