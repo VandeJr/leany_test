@@ -4,6 +4,9 @@ import { UsersService } from './users.service';
 import { UsersModule } from './users.module';
 import { UserEntity } from './entities/user.entity';
 import { ProfileEntity } from './entities/profile.entity';
+import { ShoppingCartEntity } from '../cart/entities/shopping-cart.entity';
+import { CartProductEntity } from '../cart/entities/cart-product.entity';
+import { ProductEntity } from '../products/entities/product.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ConflictException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
@@ -18,7 +21,13 @@ describe('UsersService (Integration with SQLite)', () => {
                 TypeOrmModule.forRoot({
                     type: 'sqlite',
                     database: ':memory:',
-                    entities: [UserEntity, ProfileEntity],
+                    entities: [
+                        UserEntity,
+                        ProfileEntity,
+                        ShoppingCartEntity,
+                        CartProductEntity,
+                        ProductEntity
+                    ],
                     synchronize: true,
                 }),
                 UsersModule,
