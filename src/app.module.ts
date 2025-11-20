@@ -8,6 +8,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { CartModule } from './modules/cart/cart.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { IntegrationsModule } from './modules/integrations/integrations.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
     imports: [
@@ -21,7 +22,7 @@ import { IntegrationsModule } from './modules/integrations/integrations.module';
             inject: [ConfigService],
             useFactory: getTypeOrmConfig,
         }),
-        UsersModule, ProductsModule, CartModule, OrdersModule, IntegrationsModule
+        UsersModule, ProductsModule, CartModule, OrdersModule, IntegrationsModule, AuthModule
     ],
     controllers: [],
     providers: [],
